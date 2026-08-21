@@ -1,0 +1,6 @@
+{
+  "name": "Financial News & Economic Intelligence",
+  "description": "AI-powered financial news aggregation, deduplication, market impact analysis, and economic event intelligence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
