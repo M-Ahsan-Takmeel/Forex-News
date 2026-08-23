@@ -2,13 +2,30 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const CONFIG = {
-  PORT: 3000,
-  GEMINI_API_KEY: process.env.GEMINI_API_KEY || '',
-  ALPHA_VANTAGE_API_KEY: process.env.ALPHA_VANTAGE_API_KEY || '',
-  FINNHUB_API_KEY: process.env.FINNHUB_API_KEY || '',
-  NEWS_API_KEY: process.env.NEWS_API_KEY || '',
-  GNEWS_API_KEY: process.env.GNEWS_API_KEY || '',
-  FRED_API_KEY: process.env.FRED_API_KEY || '',
+  get PORT(): number {
+    return Number(process.env.PORT) || 3000;
+  },
+  get APP_URL(): string {
+    return process.env.APP_URL || '';
+  },
+  get GEMINI_API_KEY(): string {
+    return process.env.GEMINI_API_KEY || '';
+  },
+  get ALPHA_VANTAGE_API_KEY(): string {
+    return process.env.ALPHA_VANTAGE_API_KEY || '';
+  },
+  get FINNHUB_API_KEY(): string {
+    return process.env.FINNHUB_API_KEY || '';
+  },
+  get NEWS_API_KEY(): string {
+    return process.env.NEWS_API_KEY || '';
+  },
+  get GNEWS_API_KEY(): string {
+    return process.env.GNEWS_API_KEY || '';
+  },
+  get FRED_API_KEY(): string {
+    return process.env.FRED_API_KEY || '';
+  },
 
   // Cache TTLs in milliseconds
   CACHE_TTL: {
