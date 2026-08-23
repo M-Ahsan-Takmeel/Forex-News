@@ -1,4 +1,5 @@
 import { EconomicEvent, DeviationImpact } from '../../src/types';
+import { parseAndNormalizeFinancialNumber } from './dataQualityLayer';
 
 interface IndicatorProfile {
   whatItMeasures: string;
@@ -91,37 +92,49 @@ export function enrichEconomicEventIntelligence(event: EconomicEvent): EconomicE
     higherIsHawkish: true
   };
 
-  // Forecast vs Actual Analysis
+  // Normalize all numerical representations using Data Quality layer
+  const normalizedPrev = parseAndNormalizeFinancialNumber(event.previous);
+  const normalizedFcast = parseAndNormalizeFinancialNumber(event.forecast);
+  const normalizedAct = parseAndNormalizeFinancialNumber(event.actual);
+
+  // Forecast vs Actual Analysis with Normalized Numerical Safety
   let deviation: DeviationImpact = 'pending';
   let deviationNote = '';
 
-  if (event.actual && event.actual !== 'N/A' && event.actual !== '--') {
-    const actNum = parseFloat(event.actual.replace(/[^\d.-]/g, ''));
-    const fcastNum = event.forecast && event.forecast !== 'N/A' && event.forecast !== '--'
-      ? parseFloat(event.forecast.replace(/[^\d.-]/g, ''))
-      : NaN;
-
-    if (!isNaN(actNum) && !isNaN(fcastNum)) {
-      const diff = actNum - fcastNum;
+  if (normalizedAct.status === 'valid' && normalizedAct.numeric !== null) {
+    if (normalizedFcast.status === 'valid' && normalizedFcast.numeric !== null) {
+      const diff = normalizedAct.numeric - normalizedFcast.numeric;
       const diffFormatted = diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2);
+      const isPercentage = normalizedAct.isPercentage || normalizedFcast.isPercentage;
+      const diffDisplay = isPercentage ? `${diffFormatted} percentage points` : `${diffFormatted} ${normalizedAct.unit || event.unit || ''}`;
 
-      if (Math.abs(diff) < 0.05) {
+      if (Math.abs(diff) < 0.005) {
         deviation = 'in_line';
-        deviationNote = `Actual (${event.actual}) matched consensus forecast (${event.forecast}) within statistical margin.`;
+        deviationNote = `Actual (${normalizedAct.display}) met consensus forecast (${normalizedFcast.display}) precisely.`;
       } else if (diff > 0) {
         deviation = profile.higherIsHawkish ? 'better_than_expected' : 'worse_than_expected';
-        deviationNote = `Beat consensus by ${diffFormatted}${event.unit || ''} (Actual: ${event.actual} vs Forecast: ${event.forecast}).`;
+        deviationNote = `Exceeded consensus by ${diffDisplay} (Actual: ${normalizedAct.display} vs Forecast: ${normalizedFcast.display}).`;
       } else {
         deviation = profile.higherIsHawkish ? 'worse_than_expected' : 'better_than_expected';
-        deviationNote = `Missed consensus by ${diffFormatted}${event.unit || ''} (Actual: ${event.actual} vs Forecast: ${event.forecast}).`;
+        deviationNote = `Fell below consensus by ${diffDisplay} (Actual: ${normalizedAct.display} vs Forecast: ${normalizedFcast.display}).`;
       }
     } else {
-      deviationNote = `Latest released figure: ${event.actual} (Previous: ${event.previous}).`;
+      deviation = 'pending';
+      deviationNote = `Latest reported print: ${normalizedAct.display} (Previous: ${normalizedPrev.display}). No official consensus forecast available.`;
     }
+  } else if (normalizedAct.status === 'cancelled') {
+    deviation = 'pending';
+    deviationNote = 'Statistical release was officially cancelled by reporting statistical agency.';
+  } else if (normalizedAct.status === 'postponed') {
+    deviation = 'pending';
+    deviationNote = 'Statistical release was officially postponed to a future reporting window.';
   }
 
   return {
     ...event,
+    normalizedPrevious: normalizedPrev,
+    normalizedForecast: normalizedFcast,
+    normalizedActual: normalizedAct,
     deviation: event.deviation || deviation,
     deviationNote: event.deviationNote || deviationNote,
     aiExplanation: {

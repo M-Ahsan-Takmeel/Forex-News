@@ -1,11 +1,14 @@
-import { ProviderDiagnostic } from '../../src/types';
-import { testGeminiConnection } from '../pipeline/aiProcessor';
+import { ProviderDiagnostic, MultiTierDiagnostics } from '../../src/types';
+import { testGeminiConnection, getAiGroundingHealthStatus } from '../pipeline/aiProcessor';
 import { testNewsApiConnection } from '../providers/news/newsApiProvider';
 import { testAlphaVantageConnection } from '../providers/news/alphaVantageNewsProvider';
 import { testFinnhubConnection } from '../providers/news/finnhubNewsProvider';
 import { testRssConnection } from '../providers/news/rssProvider';
 import { testFredConnection } from '../providers/fred/fredProvider';
 import { testEconomicCalendarConnection } from '../providers/calendar/economicCalendarProvider';
+import { dataStore } from '../pipeline/dataStore';
+import { dataQualityRegistry } from '../pipeline/dataQualityLayer';
+import { runCompleteReliabilityTestSuite } from './reliabilityTestSuite';
 
 export async function runFullProviderDiagnostics(): Promise<{
   timestamp: string;
@@ -135,3 +138,35 @@ export async function runFullProviderDiagnostics(): Promise<{
     totalConfigured
   };
 }
+
+export async function runMultiTierDiagnostics(): Promise<MultiTierDiagnostics> {
+  const providerDiag = await runFullProviderDiagnostics();
+  const dataHealth = dataStore.getDataHealth();
+  const intelligenceHealth = dataStore.getIntelligenceHealth();
+  const testReport = await runCompleteReliabilityTestSuite();
+
+  const memUsage = process.memoryUsage();
+  const memoryMb = Math.round(memUsage.heapUsed / (1024 * 1024));
+
+  const isHealthy =
+    providerDiag.connectedCount >= 2 &&
+    dataHealth.schemaValidationPassRate >= 90 &&
+    intelligenceHealth.groundingVerificationRate >= 80 &&
+    testReport.passRate >= 90;
+
+  return {
+    timestamp: new Date().toISOString(),
+    overallStatus: isHealthy ? 'healthy' : 'degraded',
+    infrastructure: {
+      uptimeSeconds: Math.round(process.uptime()),
+      memoryUsageMb: memoryMb,
+      activePort: 3000,
+      environment: 'production'
+    },
+    providers: providerDiag.diagnostics,
+    dataQuality: dataHealth,
+    intelligence: intelligenceHealth,
+    reliabilityTestSuite: testReport
+  };
+}
+

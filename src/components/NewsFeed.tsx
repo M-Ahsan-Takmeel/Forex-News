@@ -20,7 +20,8 @@ import {
   ThumbsUp,
   ThumbsDown,
   Target,
-  UserCheck
+  UserCheck,
+  ArrowUpRight
 } from 'lucide-react';
 
 export const NewsFeed: React.FC = () => {
@@ -102,48 +103,51 @@ export const NewsFeed: React.FC = () => {
   const getImportanceBadge = (lvl: string) => {
     switch (lvl) {
       case 'critical':
-        return 'bg-rose-100 text-rose-800 border-rose-200';
+        return 'bg-[#EF4444]/15 text-[#EF4444] border-[#EF4444]/30';
       case 'high':
-        return 'bg-amber-100 text-amber-800 border-amber-200';
+        return 'bg-[#F59E0B]/15 text-[#F59E0B] border-[#F59E0B]/30';
       case 'medium':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-[#3B82F6]/15 text-[#3B82F6] border-[#3B82F6]/30';
       default:
-        return 'bg-slate-100 text-slate-700 border-slate-200';
+        return 'bg-[#151515] text-[#777777] border-[#242424]';
     }
   };
 
   return (
-    <div id="news-feed-section" className="space-y-6 pb-12">
+    <div id="news-feed-section" className="space-y-6">
       {/* Top Filter & Header Area */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+      <div className="bg-[#101010] rounded-lg border border-[#242424] p-5 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-              <span>Financial Intelligence Stream</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] tracking-widest uppercase text-[#777777]">INTELLIGENCE STREAM</span>
               {viewMode === 'intelligent' && (
-                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                  Personalized Feed
+                <span className="font-mono text-[10px] font-bold px-1.5 py-0.2 rounded-xs bg-[#3B82F6]/15 text-[#3B82F6] border border-[#3B82F6]/30 uppercase">
+                  Personalized
                 </span>
               )}
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-[#F2F2F2] tracking-tight mt-0.5">
+              Financial News & Intelligence Stream
             </h1>
-            <p className="text-xs text-slate-500">
-              Balanced global intelligence ranked by macro importance & your interest profile
+            <p className="text-xs text-[#777777] mt-0.5">
+              Multi-source normalized macro news ranked by importance and market impact
             </p>
           </div>
 
           {/* View / Ranking Mode Toggle */}
-          <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-semibold self-start md:self-auto flex-wrap">
+          <div className="flex items-center gap-1 p-1 bg-[#050505] rounded border border-[#242424] text-xs font-semibold self-start md:self-auto flex-wrap">
             <button
               id="btn-feed-mode-intelligent"
               onClick={() => {
                 setViewMode('intelligent');
                 setFeedRankingMode('intelligent');
               }}
-              className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
-                viewMode === 'intelligent' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              className={`px-2.5 py-1 rounded flex items-center gap-1.5 text-xs font-medium transition-all ${
+                viewMode === 'intelligent' ? 'bg-[#151515] text-[#F2F2F2] border border-[#242424] font-semibold' : 'text-[#777777] hover:text-[#A0A0A0]'
               }`}
             >
-              <Target className="w-3.5 h-3.5 text-emerald-600" />
+              <Target className="w-3 h-3 text-[#3B82F6]" />
               <span>Intelligent</span>
             </button>
             <button
@@ -152,11 +156,11 @@ export const NewsFeed: React.FC = () => {
                 setViewMode('important');
                 setFeedRankingMode('global_importance');
               }}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                viewMode === 'important' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                viewMode === 'important' ? 'bg-[#151515] text-[#F2F2F2] border border-[#242424] font-semibold' : 'text-[#777777] hover:text-[#A0A0A0]'
               }`}
             >
-              Global Importance
+              Global Priority
             </button>
             <button
               id="btn-feed-mode-latest"
@@ -164,8 +168,8 @@ export const NewsFeed: React.FC = () => {
                 setViewMode('latest');
                 setFeedRankingMode('latest');
               }}
-              className={`px-3 py-1.5 rounded-lg transition-all ${
-                viewMode === 'latest' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                viewMode === 'latest' ? 'bg-[#151515] text-[#F2F2F2] border border-[#242424] font-semibold' : 'text-[#777777] hover:text-[#A0A0A0]'
               }`}
             >
               Latest
@@ -173,8 +177,8 @@ export const NewsFeed: React.FC = () => {
             <button
               id="btn-feed-mode-saved"
               onClick={() => setViewMode('saved')}
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${
-                viewMode === 'saved' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              className={`px-2.5 py-1 rounded transition-all flex items-center gap-1 text-xs font-medium ${
+                viewMode === 'saved' ? 'bg-[#151515] text-[#F2F2F2] border border-[#242424] font-semibold' : 'text-[#777777] hover:text-[#A0A0A0]'
               }`}
             >
               <Bookmark className="w-3 h-3" />
@@ -184,17 +188,17 @@ export const NewsFeed: React.FC = () => {
         </div>
 
         {/* Search Bar & Dropdown Filters */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-2">
           <form onSubmit={handleSearchSubmit} className="sm:col-span-6 relative">
             <input
               id="news-search-input"
               type="text"
-              placeholder="Search news, central banks, commodities, or companies..."
+              placeholder="Search intelligence, entities, central banks, commodities..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full pl-8 pr-8 py-1.5 bg-[#050505] border border-[#242424] rounded text-xs text-[#F2F2F2] placeholder-[#777777] focus:outline-none focus:border-[#3B82F6]"
             />
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+            <Search className="w-3.5 h-3.5 text-[#777777] absolute left-2.5 top-2" />
             {searchTerm && (
               <button
                 type="button"
@@ -202,7 +206,7 @@ export const NewsFeed: React.FC = () => {
                   setSearchTerm('');
                   loadNews();
                 }}
-                className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"
+                className="absolute right-2 top-2 text-[#777777] hover:text-[#F2F2F2]"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -215,13 +219,13 @@ export const NewsFeed: React.FC = () => {
               id="select-news-importance"
               value={selectedImportance}
               onChange={(e) => setSelectedImportance(e.target.value)}
-              className="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className="w-full py-1.5 px-2.5 bg-[#050505] border border-[#242424] rounded text-xs text-[#A0A0A0] focus:outline-none focus:border-[#3B82F6]"
             >
               <option value="all">All Importance Levels</option>
-              <option value="critical">Critical Importance</option>
-              <option value="high">High Importance</option>
-              <option value="medium">Medium Importance</option>
-              <option value="low">Low Importance</option>
+              <option value="critical">Critical Severity</option>
+              <option value="high">High Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="low">Standard / Low</option>
             </select>
           </div>
 
@@ -231,20 +235,20 @@ export const NewsFeed: React.FC = () => {
               id="select-news-market"
               value={selectedMarketFilter}
               onChange={(e) => setSelectedMarketFilter(e.target.value)}
-              className="w-full py-2 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className="w-full py-1.5 px-2.5 bg-[#050505] border border-[#242424] rounded text-xs text-[#A0A0A0] focus:outline-none focus:border-[#3B82F6]"
             >
-              <option value="all">All Affected Markets</option>
-              <option value="Forex">Forex / Currencies</option>
-              <option value="Stocks">Stocks / Indices</option>
-              <option value="Commodities">Commodities / Energy / Metals</option>
-              <option value="Bonds">Bonds / Yields</option>
+              <option value="all">All Impacted Asset Classes</option>
+              <option value="Forex">Forex / FX Pairs</option>
+              <option value="Stocks">Equities & Indices</option>
+              <option value="Commodities">Commodities & Energy</option>
+              <option value="Bonds">Sovereign Bonds & Yields</option>
               <option value="Crypto">Digital Assets</option>
             </select>
           </div>
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 border-t border-slate-100">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-2 border-t border-[#242424]">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
             return (
@@ -252,10 +256,10 @@ export const NewsFeed: React.FC = () => {
                 key={cat}
                 id={`cat-pill-${cat.toLowerCase().replace(/\s+/g, '-')}`}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-2.5 py-1 rounded text-xs font-medium whitespace-nowrap transition-all ${
                   isActive
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#151515] text-[#F2F2F2] border border-[#242424] font-semibold'
+                    : 'bg-[#0A0A0A] text-[#777777] hover:text-[#A0A0A0] hover:bg-[#151515] border border-transparent'
                 }`}
               >
                 {cat}
@@ -267,14 +271,14 @@ export const NewsFeed: React.FC = () => {
 
       {/* News Cards Grid */}
       {loading ? (
-        <div className="p-12 text-center text-slate-400 bg-white rounded-2xl border border-slate-200">
-          <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-emerald-600" />
-          <p className="text-xs">Ranking & personalizing news intelligence stream...</p>
+        <div className="p-12 text-center text-[#777777] bg-[#101010] rounded-lg border border-[#242424]">
+          <RefreshCw className="w-5 h-5 animate-spin mx-auto mb-2 text-[#3B82F6]" />
+          <p className="font-mono text-xs">SYNCHRONIZING & SCORING INTELLIGENCE FEED...</p>
         </div>
       ) : displayedArticles.length === 0 ? (
-        <div className="p-12 text-center text-slate-500 bg-white rounded-2xl border border-slate-200">
-          <p className="text-sm font-semibold text-slate-700 mb-1">No articles match your current filters</p>
-          <p className="text-xs text-slate-400 mb-4">Try clearing your search term or adjusting categories</p>
+        <div className="p-12 text-center text-[#777777] bg-[#101010] rounded-lg border border-[#242424] space-y-3">
+          <p className="text-sm font-semibold text-[#F2F2F2]">No articles match your current criteria</p>
+          <p className="text-xs text-[#777777]">Try modifying keywords or clearing category constraints</p>
           <button
             onClick={() => {
               setSelectedCategory('All');
@@ -283,9 +287,9 @@ export const NewsFeed: React.FC = () => {
               setSearchTerm('');
               setViewMode('intelligent');
             }}
-            className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-medium hover:bg-slate-800"
+            className="px-3 py-1.5 rounded bg-[#151515] hover:bg-[#202020] border border-[#242424] text-[#F2F2F2] font-mono text-xs transition-colors"
           >
-            Reset All Filters
+            RESET ALL FILTERS
           </button>
         </div>
       ) : (
@@ -303,21 +307,21 @@ export const NewsFeed: React.FC = () => {
                   recordInteraction('article', article.id);
                   setSelectedArticle(article);
                 }}
-                className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs hover:border-emerald-300 hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between space-y-4"
+                className="bg-[#101010] rounded-lg border border-[#242424] p-4 sm:p-5 hover:border-[#3B82F6]/40 hover:bg-[#121212] transition-all cursor-pointer group flex flex-col justify-between space-y-3.5"
               >
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {/* Card Header */}
                   <div className="flex items-center justify-between gap-2 flex-wrap text-xs">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       {article.userRelevanceScore !== undefined && viewMode === 'intelligent' && (
-                        <span className="px-2 py-0.5 rounded font-bold text-[10px] bg-emerald-100 text-emerald-900 border border-emerald-200">
-                          {article.userRelevanceScore}% Match
+                        <span className="font-mono px-1.5 py-0.2 rounded-xs font-bold text-[9px] bg-[#3B82F6]/15 text-[#3B82F6] border border-[#3B82F6]/30">
+                          {article.userRelevanceScore}% MATCH
                         </span>
                       )}
-                      <span className={`px-2 py-0.5 rounded font-bold uppercase text-[10px] border ${getImportanceBadge(article.importance)}`}>
+                      <span className={`font-mono px-1.5 py-0.2 rounded-xs font-bold uppercase text-[9px] border ${getImportanceBadge(article.importance)}`}>
                         {article.importance}
                       </span>
-                      <span className="text-slate-600 font-medium px-2 py-0.5 rounded bg-slate-100">
+                      <span className="font-mono text-[#777777] uppercase text-[10px]">
                         {article.category}
                       </span>
                     </div>
@@ -334,12 +338,12 @@ export const NewsFeed: React.FC = () => {
                             action: isLiked ? 'remove' : 'like'
                           });
                         }}
-                        className={`p-1.5 rounded-md hover:bg-slate-100 transition-colors ${
-                          isLiked ? 'text-emerald-700 bg-emerald-50' : 'text-slate-400 hover:text-emerald-700'
+                        className={`p-1 rounded transition-colors ${
+                          isLiked ? 'text-[#3B82F6] bg-[#151515]' : 'text-[#777777] hover:text-[#3B82F6]'
                         }`}
                         title="More like this"
                       >
-                        <ThumbsUp className="w-3.5 h-3.5" />
+                        <ThumbsUp className="w-3 h-3" />
                       </button>
 
                       <button
@@ -352,17 +356,17 @@ export const NewsFeed: React.FC = () => {
                             action: isDisliked ? 'remove' : 'dislike'
                           });
                         }}
-                        className={`p-1.5 rounded-md hover:bg-slate-100 transition-colors ${
-                          isDisliked ? 'text-rose-700 bg-rose-50' : 'text-slate-400 hover:text-rose-700'
+                        className={`p-1 rounded transition-colors ${
+                          isDisliked ? 'text-[#EF4444] bg-[#151515]' : 'text-[#777777] hover:text-[#EF4444]'
                         }`}
                         title="Less like this"
                       >
-                        <ThumbsDown className="w-3.5 h-3.5" />
+                        <ThumbsDown className="w-3 h-3" />
                       </button>
 
                       {article.clusterCount && article.clusterCount > 1 && (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                          <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                        <span className="inline-flex items-center gap-1 text-[10px] font-mono text-[#A0A0A0] bg-[#151515] px-1.5 py-0.2 rounded-xs border border-[#242424]">
+                          <ShieldCheck className="w-3 h-3 text-[#3B82F6]" />
                           {article.clusterCount} Sources
                         </span>
                       )}
@@ -373,50 +377,51 @@ export const NewsFeed: React.FC = () => {
                           e.stopPropagation();
                           toggleBookmark(article.id);
                         }}
-                        className={`p-1.5 rounded-md hover:bg-slate-100 transition-colors ${
-                          bookmarked ? 'text-amber-600' : 'text-slate-400 hover:text-slate-600'
+                        className={`p-1 rounded transition-colors ${
+                          bookmarked ? 'text-[#3B82F6]' : 'text-[#777777] hover:text-[#F2F2F2]'
                         }`}
                         title={bookmarked ? 'Remove Bookmark' : 'Save Article'}
                       >
-                        {bookmarked ? <BookmarkCheck className="w-4 h-4 fill-amber-50" /> : <Bookmark className="w-4 h-4" />}
+                        <Bookmark className="w-3 h-3 fill-current" />
                       </button>
                     </div>
                   </div>
 
                   {/* Headline */}
-                  <h2 className="font-bold text-base text-slate-900 group-hover:text-emerald-950 transition-colors leading-snug">
+                  <h2 className="font-bold text-sm sm:text-base text-[#F2F2F2] group-hover:text-white transition-colors leading-snug">
                     {article.title}
                   </h2>
 
                   {/* Relevance Explanation if personalized */}
                   {article.userRelevanceReason && (
-                    <div className="text-[11px] text-emerald-800 bg-emerald-50/80 px-2.5 py-1 rounded-md border border-emerald-200/60 font-medium">
-                      💡 {article.userRelevanceReason}
+                    <div className="text-[11px] text-[#A0A0A0] bg-[#0A0A0A] px-2 py-1 rounded border border-[#242424]">
+                      <span className="text-[#3B82F6] font-mono text-[10px] mr-1">WHY MATCHED:</span>
+                      {article.userRelevanceReason}
                     </div>
                   )}
 
                   {/* AI Summary Block */}
-                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1.5">
-                    <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-800">
-                      <Sparkles className="w-3 h-3 text-emerald-600" />
-                      <span>AI Summary</span>
+                  <div className="p-3 rounded bg-[#0A0A0A] border border-[#242424] text-xs space-y-1">
+                    <div className="flex items-center gap-1 font-mono text-[9px] font-bold uppercase tracking-wider text-[#3B82F6]">
+                      <Sparkles className="w-3 h-3 text-[#3B82F6]" />
+                      <span>INTELLIGENCE SUMMARY</span>
                     </div>
-                    <p className="text-slate-700 leading-relaxed line-clamp-2">
+                    <p className="text-xs text-[#A0A0A0] leading-relaxed line-clamp-2">
                       {article.aiSummary}
                     </p>
                   </div>
 
                   {/* Why it matters teaser */}
-                  <div className="text-xs text-slate-600">
-                    <span className="font-semibold text-slate-800">Why it matters: </span>
-                    <span className="line-clamp-1">{article.aiWhyItMatters}</span>
+                  <div className="text-xs text-[#777777]">
+                    <span className="font-mono text-[10px] uppercase text-[#A0A0A0]">MARKET IMPLICATION: </span>
+                    <span className="line-clamp-1 text-[#A0A0A0]">{article.aiWhyItMatters}</span>
                   </div>
                 </div>
 
                 {/* Card Footer */}
-                <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-                  <div className="flex items-center gap-3 text-slate-400 text-[11px]">
-                    <span className="font-medium text-slate-600">{article.source}</span>
+                <div className="pt-2.5 border-t border-[#242424] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-3 text-[#777777] text-[11px] font-mono">
+                    <span className="text-[#A0A0A0] font-medium">{article.source}</span>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {new Date(article.publishedAt).toLocaleDateString(undefined, {
@@ -430,19 +435,19 @@ export const NewsFeed: React.FC = () => {
                     {article.aiMarketImpact.slice(0, 2).map((imp, idx) => (
                       <span
                         key={idx}
-                        className={`text-[10px] px-2 py-0.5 rounded font-medium border ${
+                        className={`font-mono text-[9px] px-1.5 py-0.2 rounded-xs border ${
                           imp.direction === 'bullish'
-                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            ? 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/30'
                             : imp.direction === 'bearish'
-                            ? 'bg-rose-50 text-rose-800 border-rose-200'
-                            : 'bg-slate-100 text-slate-700 border-slate-200'
+                            ? 'bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/30'
+                            : 'bg-[#151515] text-[#777777] border-[#242424]'
                         }`}
                       >
-                        {imp.market}
+                        {imp.market} · {imp.direction.toUpperCase()}
                       </span>
                     ))}
-                    <span className="text-emerald-700 font-semibold text-xs inline-flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                      <ChevronRight className="w-4 h-4" />
+                    <span className="text-[#3B82F6] font-mono text-[11px] inline-flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                      <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
@@ -454,4 +459,5 @@ export const NewsFeed: React.FC = () => {
     </div>
   );
 };
+
 

@@ -77,7 +77,13 @@ export interface SourceProvenanceChain {
   }[];
   retrievalTimestamp: string;
   processedTimestamp: string;
-  verificationStatus: 'multi_source_verified' | 'single_source_provisional' | 'official_agency_grounded';
+  verificationStatus:
+    | 'multi_source_verified'
+    | 'single_source_provisional'
+    | 'official_agency_grounded'
+    | 'multi_source_corroborated'
+    | 'single_wire'
+    | 'unverified';
   evidenceChain: string[];
 }
 
@@ -86,10 +92,11 @@ export interface NormalizedFinancialNumber {
   numeric: number | null;
   unit: string;
   isPercentage: boolean;
-  isBasisPoints: boolean;
-  isCurrency: boolean;
+  isBasisPoints?: boolean;
+  isCurrency?: boolean;
+  currencyPrefix?: string;
   display: string;
-  status: 'valid' | 'unavailable' | 'non_numeric' | 'cancelled' | 'postponed';
+  status: 'valid' | 'unavailable' | 'non_numeric' | 'cancelled' | 'postponed' | 'pending' | 'unparseable';
 }
 
 export interface QuarantinedItem {
@@ -97,25 +104,38 @@ export interface QuarantinedItem {
   provider: string;
   itemType: 'news' | 'calendar' | 'macro';
   title?: string;
-  reason: string;
+  reason?: string;
+  issues?: string[];
   rawPayloadSnippet: string;
-  timestamp: string;
+  timestamp?: string;
+  quarantinedAt?: string;
 }
 
 export interface DataHealthStatus {
-  freshness: FreshnessStatus;
-  schemaValidationRate: number; // 0 - 100%
+  freshness?: FreshnessStatus;
+  schemaValidationRate?: number; // 0 - 100%
+  schemaValidationPassRate: number; // 0 - 100%
   quarantinedCount: number;
-  quarantinedBreakdown: Record<string, number>;
-  totalProcessed: number;
-  lastValidationCheck: string;
+  quarantinedBreakdown?: Record<string, number>;
+  totalProcessed?: number;
+  totalItemsEvaluated?: number;
+  numericalNormalizationRate?: number; // 0 - 100%
+  utcTimestampComplianceRate?: number; // 0 - 100%
+  provenanceIntegrityRate?: number; // 0 - 100%
+  lastValidationCheck?: string;
 }
 
 export interface IntelligenceHealthStatus {
-  clusteringEfficacy: number; // 0 - 100%
-  entityExtractionCoverage: number; // 0 - 100%
-  thematicCohesionScore: number; // 0 - 100%
-  totalStoryClusters: number;
+  clusteringEfficacy?: number; // 0 - 100%
+  entityExtractionCoverage?: number; // 0 - 100%
+  thematicCohesionScore?: number; // 0 - 100%
+  totalStoryClusters?: number;
+  groundingVerificationRate: number; // 0 - 100%
+  unsupportedClaimsPrevented: number;
+  insufficientEvidenceCount: number;
+  multiSourceCorroborationRate?: number; // 0 - 100%
+  fallbackAnalysisRate: number; // 0 - 100%
+  rateLimitCooldownActive: boolean;
 }
 
 export interface AiGroundingHealthStatus {
@@ -129,13 +149,23 @@ export interface AiGroundingHealthStatus {
 
 export interface MultiTierDiagnostics {
   timestamp: string;
-  infrastructure: ProviderDiagnostic[];
-  dataHealth: DataHealthStatus;
-  intelligenceHealth: IntelligenceHealthStatus;
-  aiHealth: AiGroundingHealthStatus;
-  testsPassing: boolean;
-  connectedCount: number;
-  totalConfigured: number;
+  overallStatus?: 'healthy' | 'degraded' | 'critical';
+  infrastructure: {
+    uptimeSeconds: number;
+    memoryUsageMb: number;
+    activePort: number;
+    environment: string;
+  } | ProviderDiagnostic[];
+  providers?: ProviderDiagnostic[];
+  dataQuality?: DataHealthStatus;
+  dataHealth?: DataHealthStatus;
+  intelligence?: IntelligenceHealthStatus;
+  intelligenceHealth?: IntelligenceHealthStatus;
+  aiHealth?: AiGroundingHealthStatus;
+  reliabilityTestSuite?: any;
+  testsPassing?: boolean;
+  connectedCount?: number;
+  totalConfigured?: number;
 }
 
 export interface NewsArticle {
@@ -340,3 +370,5 @@ export interface MacroOverview {
   };
   lastUpdated: string;
 }
+
+

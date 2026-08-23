@@ -1,4 +1,4 @@
-import { NewsArticle, EconomicEvent, MarketMetric, MacroOverview, IntelligenceAnswer, ProviderDiagnostic, MacroSeries, ThematicCluster, UserPreferences, FeedRankingMode } from '../types';
+import { NewsArticle, EconomicEvent, MarketMetric, MacroOverview, IntelligenceAnswer, ProviderDiagnostic, MacroSeries, ThematicCluster, UserPreferences, FeedRankingMode, MultiTierDiagnostics, QuarantinedItem } from '../types';
 
 export async function fetchMarketMetrics(): Promise<{ metrics: MarketMetric[]; lastUpdated: string }> {
   const res = await fetch('/api/markets/summary');
@@ -147,6 +147,24 @@ export async function fetchMacroSeries(seriesId: string): Promise<{ series: Macr
 export async function fetchThematicClusters(): Promise<{ clusters: ThematicCluster[] }> {
   const res = await fetch('/api/thematic-clusters');
   if (!res.ok) throw new Error('Failed to fetch thematic clusters');
+  return res.json();
+}
+
+export async function fetchMultiTierDiagnostics(): Promise<MultiTierDiagnostics> {
+  const res = await fetch('/api/diagnostics/multi-tier');
+  if (!res.ok) throw new Error('Failed to fetch multi-tier diagnostics');
+  return res.json();
+}
+
+export async function fetchQuarantinedItems(): Promise<{ total: number; items: QuarantinedItem[] }> {
+  const res = await fetch('/api/diagnostics/quarantined');
+  if (!res.ok) throw new Error('Failed to fetch quarantined records');
+  return res.json();
+}
+
+export async function fetchReliabilityTests(): Promise<any> {
+  const res = await fetch('/api/diagnostics/reliability-tests');
+  if (!res.ok) throw new Error('Failed to run reliability test suite');
   return res.json();
 }
 

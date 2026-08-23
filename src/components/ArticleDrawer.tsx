@@ -74,13 +74,13 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
   const getImportanceBadge = (lvl: string) => {
     switch (lvl) {
       case 'critical':
-        return 'bg-rose-100 text-rose-800 border-rose-200';
+        return 'bg-[#EF4444]/15 text-[#EF4444] border-[#EF4444]/30';
       case 'high':
-        return 'bg-amber-100 text-amber-800 border-amber-200';
+        return 'bg-[#F59E0B]/15 text-[#F59E0B] border-[#F59E0B]/30';
       case 'medium':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-[#3B82F6]/15 text-[#3B82F6] border-[#3B82F6]/30';
       default:
-        return 'bg-slate-100 text-slate-700 border-slate-200';
+        return 'bg-[#151515] text-[#777777] border-[#242424]';
     }
   };
 
@@ -88,26 +88,26 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
     switch (direction) {
       case 'bullish':
         return {
-          bg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-          icon: <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />,
+          bg: 'bg-[#3B82F6]/10 text-[#3B82F6] border-[#3B82F6]/30',
+          icon: <TrendingUp className="w-3.5 h-3.5 text-[#3B82F6]" />,
           label: 'Bullish'
         };
       case 'bearish':
         return {
-          bg: 'bg-rose-50 text-rose-700 border-rose-200',
-          icon: <TrendingDown className="w-3.5 h-3.5 text-rose-600" />,
+          bg: 'bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/30',
+          icon: <TrendingDown className="w-3.5 h-3.5 text-[#EF4444]" />,
           label: 'Bearish'
         };
       case 'neutral':
         return {
-          bg: 'bg-slate-100 text-slate-700 border-slate-200',
-          icon: <Minus className="w-3.5 h-3.5 text-slate-500" />,
+          bg: 'bg-[#151515] text-[#A0A0A0] border-[#242424]',
+          icon: <Minus className="w-3.5 h-3.5 text-[#777777]" />,
           label: 'Neutral'
         };
       default:
         return {
-          bg: 'bg-amber-50 text-amber-700 border-amber-200',
-          icon: <HelpCircle className="w-3.5 h-3.5 text-amber-500" />,
+          bg: 'bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/30',
+          icon: <HelpCircle className="w-3.5 h-3.5 text-[#F59E0B]" />,
           label: 'Unclear'
         };
     }
@@ -116,32 +116,32 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
   return (
     <div
       id="article-intelligence-drawer-backdrop"
-      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex justify-end"
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex justify-end"
       onClick={onClose}
     >
       <div
         id="article-drawer-panel"
-        className="w-full max-w-2xl bg-white h-full shadow-2xl flex flex-col overflow-hidden text-slate-800 animate-in slide-in-from-right duration-200"
+        className="w-full max-w-2xl bg-[#0A0A0A] border-l border-[#242424] h-full shadow-2xl flex flex-col overflow-hidden text-[#A0A0A0] animate-in slide-in-from-right duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drawer Header */}
-        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-[#242424] bg-[#101010] flex items-center justify-between">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`text-xs font-semibold px-2.5 py-0.5 rounded border uppercase tracking-wider ${getImportanceBadge(article.importance)}`}>
-              {article.importance} Importance
+            <span className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded-xs border uppercase tracking-wider ${getImportanceBadge(article.importance)}`}>
+              {article.importance}
             </span>
-            <span className="text-xs font-medium px-2.5 py-0.5 rounded bg-slate-200/80 text-slate-700">
+            <span className="font-mono text-[10px] uppercase font-medium px-2 py-0.5 rounded-xs bg-[#151515] text-[#A0A0A0] border border-[#242424]">
               {article.category}
             </span>
             {article.country && (
-              <span className="text-xs text-slate-500 flex items-center gap-1">
-                <Globe className="w-3 h-3" />
+              <span className="font-mono text-[10px] text-[#777777] flex items-center gap-1">
+                <Globe className="w-3 h-3 text-[#555555]" />
                 {article.country}
               </span>
             )}
             {article.isVerified && (
-              <span className="text-xs bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded flex items-center gap-1 font-medium">
-                <ShieldCheck className="w-3 h-3 text-emerald-600" />
+              <span className="font-mono text-[10px] bg-[#3B82F6]/10 text-[#3B82F6] border border-[#3B82F6]/30 px-2 py-0.5 rounded-xs flex items-center gap-1 font-bold uppercase">
+                <ShieldCheck className="w-3 h-3 text-[#3B82F6]" />
                 Verified ({article.independentSourcesCount || article.sources?.length || 1} sources)
               </span>
             )}
@@ -151,8 +151,8 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
             <button
               id="btn-drawer-bookmark"
               onClick={() => toggleBookmark(article.id)}
-              className={`p-2 rounded-lg border transition-colors ${
-                bookmarked ? 'bg-amber-50 border-amber-300 text-amber-700' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+              className={`p-1.5 rounded border transition-colors ${
+                bookmarked ? 'bg-[#3B82F6]/20 border-[#3B82F6]/50 text-[#3B82F6]' : 'border-[#242424] text-[#777777] hover:text-[#F2F2F2] hover:bg-[#151515]'
               }`}
               title={bookmarked ? 'Remove Bookmark' : 'Save for Later'}
             >
@@ -161,7 +161,7 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
             <button
               id="btn-drawer-close"
               onClick={onClose}
-              className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
+              className="p-1.5 rounded border border-[#242424] text-[#777777] hover:text-[#F2F2F2] hover:bg-[#151515] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -172,13 +172,13 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
           {/* Article Title & Source info */}
           <div>
-            <h2 className="text-xl font-bold text-slate-900 leading-tight mb-2">
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#F2F2F2] leading-tight mb-2 tracking-tight">
               {article.title}
             </h2>
-            <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
-              <span className="font-semibold text-slate-700">Source: {article.source}</span>
+            <div className="flex items-center gap-4 text-xs font-mono text-[#777777] flex-wrap">
+              <span className="text-[#A0A0A0]">Source: <span className="text-[#F2F2F2] font-semibold">{article.source}</span></span>
               <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
+                <Clock className="w-3.5 h-3.5 text-[#555555]" />
                 {new Date(article.publishedAt).toLocaleDateString(undefined, {
                   month: 'short',
                   day: 'numeric',
@@ -190,7 +190,7 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                 href={article.sourceUrl}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-1 text-emerald-700 hover:text-emerald-800 font-medium hover:underline"
+                className="inline-flex items-center gap-1 text-[#3B82F6] hover:underline"
               >
                 <span>Original Report</span>
                 <ExternalLink className="w-3 h-3" />
@@ -199,15 +199,15 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
           </div>
 
           {/* AI Intelligence Core Card */}
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-5 space-y-4">
+          <div className="rounded-lg border border-[#242424] bg-[#101010] p-5 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-md bg-emerald-600 text-white">
+                <div className="p-1.5 rounded bg-[#151515] border border-[#242424] text-[#3B82F6]">
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-slate-900">AI Intelligence Breakdown</h3>
-                  <p className="text-[11px] text-slate-500">Structured Fact, Macro Interpretation & Transmission Chain</p>
+                  <h3 className="font-bold text-sm text-[#F2F2F2]">AI Intelligence Breakdown</h3>
+                  <p className="font-mono text-[10px] text-[#777777]">Fact Extraction, Macro Interpretation & Transmission Chain</p>
                 </div>
               </div>
 
@@ -215,31 +215,31 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                 id="btn-reanalyze-article"
                 onClick={handleLiveReanalyze}
                 disabled={analyzing}
-                className="flex items-center gap-1 text-xs font-medium text-emerald-800 hover:text-emerald-950 bg-emerald-100/80 hover:bg-emerald-200 px-2.5 py-1.5 rounded-md transition-colors"
+                className="flex items-center gap-1 font-mono text-[10px] font-medium text-[#F2F2F2] hover:text-white bg-[#151515] hover:bg-[#202020] border border-[#242424] px-2.5 py-1.5 rounded transition-colors"
                 title="Regenerate analysis with Gemini AI"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${analyzing ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3 h-3 ${analyzing ? 'animate-spin' : ''}`} />
                 <span>{analyzing ? 'Analyzing...' : 'Refresh AI'}</span>
               </button>
             </div>
 
             {/* Factual Information (FACT) */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1 flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <h4 className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#777777] mb-1.5 flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#3B82F6]" />
                 <span>Verified Facts</span>
               </h4>
               {facts && facts.length > 0 ? (
-                <div className="space-y-1 bg-white/80 p-3 rounded-lg border border-emerald-100 text-xs text-slate-700">
+                <div className="space-y-1.5 bg-[#050505] p-3 rounded border border-[#242424] text-xs text-[#A0A0A0]">
                   {facts.map((fact, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-500 font-bold">•</span>
+                      <span className="text-[#3B82F6] font-bold">•</span>
                       <span>{fact}</span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-slate-700 bg-white/80 p-3 rounded-lg border border-emerald-100">
+                <p className="text-xs text-[#A0A0A0] bg-[#050505] p-3 rounded border border-[#242424]">
                   {summary}
                 </p>
               )}
@@ -247,19 +247,19 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
 
             {/* Why It Matters (INTERPRETATION) */}
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1 flex items-center gap-1">
-                <Scale className="w-3.5 h-3.5 text-emerald-600" />
+              <h4 className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#777777] mb-1.5 flex items-center gap-1">
+                <Scale className="w-3.5 h-3.5 text-[#3B82F6]" />
                 <span>Macroeconomic Interpretation</span>
               </h4>
-              <div className="bg-white/80 p-3 rounded-lg border border-emerald-100 space-y-2">
-                <p className="text-sm text-slate-700 leading-relaxed">
+              <div className="bg-[#050505] p-3 rounded border border-[#242424] space-y-2">
+                <p className="text-xs sm:text-sm text-[#F2F2F2] leading-relaxed font-editorial text-[15px]">
                   {whyItMatters}
                 </p>
                 {interpretations && interpretations.length > 0 && (
-                  <div className="pt-2 border-t border-slate-100 space-y-1 text-xs text-slate-600">
+                  <div className="pt-2 border-t border-[#242424] space-y-1 text-xs text-[#A0A0A0]">
                     {interpretations.map((interp, idx) => (
                       <div key={idx} className="flex items-start gap-2">
-                        <span className="text-slate-400 font-medium">→</span>
+                        <span className="text-[#555555] font-medium">→</span>
                         <span>{interp}</span>
                       </div>
                     ))}
@@ -271,18 +271,18 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
             {/* Transmission Chain */}
             {transmissionChain && transmissionChain.length > 0 && (
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-900 mb-1 flex items-center gap-1">
-                  <GitCommit className="w-3.5 h-3.5 text-emerald-600" />
+                <h4 className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#777777] mb-1.5 flex items-center gap-1">
+                  <GitCommit className="w-3.5 h-3.5 text-[#3B82F6]" />
                   <span>Economic Transmission Mechanism</span>
                 </h4>
-                <div className="bg-white/80 p-3 rounded-lg border border-emerald-100">
+                <div className="bg-[#050505] p-3 rounded border border-[#242424]">
                   <div className="flex flex-col gap-1.5 text-xs">
                     {transmissionChain.map((step, idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold flex items-center justify-center shrink-0">
+                        <span className="w-4 h-4 rounded-xs bg-[#151515] border border-[#242424] text-[#3B82F6] font-mono text-[10px] font-bold flex items-center justify-center shrink-0">
                           {idx + 1}
                         </span>
-                        <span className="text-slate-700 font-medium">{step}</span>
+                        <span className="text-[#A0A0A0] font-medium">{step}</span>
                       </div>
                     ))}
                   </div>
@@ -291,25 +291,25 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
             )}
 
             {/* Meta badges: Time Horizon & Confidence */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-emerald-200/60 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-[#242424] text-xs">
               <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center gap-1.5 text-slate-700">
-                  <span className="text-slate-500">Time Horizon:</span>
-                  <span className="font-semibold capitalize px-2 py-0.5 rounded bg-white border border-emerald-200 text-emerald-900">
+                <div className="flex items-center gap-1.5 text-[#A0A0A0]">
+                  <span className="font-mono text-[10px] text-[#777777] uppercase">Horizon:</span>
+                  <span className="font-mono text-xs capitalize px-2 py-0.2 rounded bg-[#151515] border border-[#242424] text-[#F2F2F2]">
                     {timeHorizon}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-slate-700">
-                  <span className="text-slate-500">AI Confidence:</span>
-                  <span className={`font-semibold capitalize px-2 py-0.5 rounded border ${
-                    confidence === 'high' ? 'bg-emerald-100 border-emerald-300 text-emerald-900' : 'bg-amber-50 border-amber-200 text-amber-900'
+                <div className="flex items-center gap-1.5 text-[#A0A0A0]">
+                  <span className="font-mono text-[10px] text-[#777777] uppercase">AI Confidence:</span>
+                  <span className={`font-mono text-xs capitalize px-2 py-0.2 rounded border ${
+                    confidence === 'high' ? 'bg-[#3B82F6]/10 border-[#3B82F6]/30 text-[#3B82F6]' : 'bg-[#F59E0B]/10 border-[#F59E0B]/30 text-[#F59E0B]'
                   }`}>
                     {confidence}
                   </span>
                 </div>
               </div>
               {confidenceReasoning && (
-                <span className="text-[11px] text-slate-500 italic">
+                <span className="text-[10px] text-[#777777] italic">
                   {confidenceReasoning}
                 </span>
               )}
@@ -318,12 +318,12 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
 
           {/* Potential Market Impact Matrix */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-                <Layers className="w-4 h-4 text-slate-600" />
+            <div className="flex items-center justify-between mb-2.5">
+              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#A0A0A0] flex items-center gap-2">
+                <Layers className="w-3.5 h-3.5 text-[#777777]" />
                 <span>Affected Markets & Asset Impact</span>
               </h3>
-              <span className="text-[11px] text-slate-400">Directional bias guide</span>
+              <span className="font-mono text-[10px] text-[#777777]">Directional bias guide</span>
             </div>
 
             {marketImpact && marketImpact.length > 0 ? (
@@ -333,20 +333,20 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                   return (
                     <div
                       key={idx}
-                      className="p-3 rounded-lg border border-slate-200 bg-white hover:border-slate-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                      className="p-3 rounded bg-[#101010] border border-[#242424] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-bold text-sm text-slate-800">{item.market}</span>
-                          <span className="text-[11px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+                          <span className="font-bold text-xs text-[#F2F2F2]">{item.market}</span>
+                          <span className="font-mono text-[9px] px-1 py-0.2 rounded-xs bg-[#151515] text-[#777777] border border-[#242424]">
                             {item.category}
                           </span>
                         </div>
-                        <p className="text-xs text-slate-600 leading-normal">{item.rationale}</p>
+                        <p className="text-xs text-[#A0A0A0] leading-normal">{item.rationale}</p>
                       </div>
 
                       <div className="shrink-0 flex sm:justify-end">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold border ${badge.bg}`}>
+                        <span className={`font-mono inline-flex items-center gap-1 px-2 py-0.5 rounded-xs text-[10px] font-semibold border ${badge.bg}`}>
                           {badge.icon}
                           {badge.label}
                         </span>
@@ -356,7 +356,7 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                 })}
               </div>
             ) : (
-              <p className="text-xs text-slate-500 italic p-3 bg-slate-50 rounded border border-slate-200">
+              <p className="text-xs text-[#777777] italic p-3 bg-[#101010] rounded border border-[#242424]">
                 No immediate primary asset sensitivity identified.
               </p>
             )}
@@ -365,16 +365,16 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
           {/* Extracted Entities */}
           {article.entities && (
             <div>
-              <h3 className="font-bold text-sm text-slate-900 mb-2 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-slate-600" />
+              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#A0A0A0] mb-2 flex items-center gap-2">
+                <Building2 className="w-3.5 h-3.5 text-[#777777]" />
                 <span>Extracted Entities</span>
               </h3>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+              <div className="p-3 bg-[#101010] rounded border border-[#242424] space-y-2 text-xs">
                 {article.entities.institutions.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-semibold">Institutions:</span>
+                    <span className="font-mono text-[10px] text-[#777777] uppercase">Institutions:</span>
                     {article.entities.institutions.map(inst => (
-                      <span key={inst} className="px-2 py-0.5 bg-slate-200/80 rounded text-slate-800 font-medium">
+                      <span key={inst} className="font-mono text-[10px] px-1.5 py-0.2 bg-[#151515] border border-[#242424] rounded-xs text-[#F2F2F2]">
                         {inst}
                       </span>
                     ))}
@@ -382,9 +382,9 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                 )}
                 {article.entities.companies.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-semibold">Companies:</span>
+                    <span className="font-mono text-[10px] text-[#777777] uppercase">Companies:</span>
                     {article.entities.companies.map(comp => (
-                      <span key={comp} className="px-2 py-0.5 bg-blue-50 border border-blue-200 rounded text-blue-800 font-medium">
+                      <span key={comp} className="font-mono text-[10px] px-1.5 py-0.2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-xs text-[#3B82F6]">
                         {comp}
                       </span>
                     ))}
@@ -392,9 +392,9 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                 )}
                 {article.entities.assets.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-semibold">Assets:</span>
+                    <span className="font-mono text-[10px] text-[#777777] uppercase">Assets:</span>
                     {article.entities.assets.map(ast => (
-                      <span key={ast} className="px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded text-emerald-800 font-medium">
+                      <span key={ast} className="font-mono text-[10px] px-1.5 py-0.2 bg-[#151515] border border-[#242424] rounded-xs text-[#A0A0A0]">
                         {ast}
                       </span>
                     ))}
@@ -402,9 +402,9 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
                 )}
                 {article.entities.currencies.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-semibold">Currencies:</span>
+                    <span className="font-mono text-[10px] text-[#777777] uppercase">Currencies:</span>
                     {article.entities.currencies.map(c => (
-                      <span key={c} className="px-2 py-0.5 bg-amber-50 border border-amber-200 rounded text-amber-800 font-bold">
+                      <span key={c} className="font-mono text-[10px] px-1.5 py-0.2 bg-[#F59E0B]/10 border border-[#F59E0B]/30 rounded-xs text-[#F59E0B] font-bold">
                         {c}
                       </span>
                     ))}
@@ -417,29 +417,29 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
           {/* Importance Breakdown */}
           {article.importanceBreakdown && (
             <div>
-              <h3 className="font-bold text-sm text-slate-900 mb-2 flex items-center gap-2">
-                <Coins className="w-4 h-4 text-slate-600" />
-                <span>Importance Score Matrix ({article.importanceBreakdown.totalScore}/100)</span>
+              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#A0A0A0] mb-2 flex items-center gap-2">
+                <Coins className="w-3.5 h-3.5 text-[#777777]" />
+                <span>Importance Score Breakdown ({article.importanceBreakdown.totalScore}/100)</span>
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-center">
-                  <div className="text-slate-400 text-[10px] uppercase font-bold">Central Bank</div>
-                  <div className="font-bold text-slate-800 text-sm">{article.importanceBreakdown.centralBankScore}/35</div>
+                <div className="p-2 bg-[#101010] rounded border border-[#242424] text-center">
+                  <div className="font-mono text-[#777777] text-[9px] uppercase">Central Bank</div>
+                  <div className="font-mono font-bold text-[#F2F2F2] text-xs">{article.importanceBreakdown.centralBankScore}/35</div>
                 </div>
-                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-center">
-                  <div className="text-slate-400 text-[10px] uppercase font-bold">Macro Impact</div>
-                  <div className="font-bold text-slate-800 text-sm">{article.importanceBreakdown.economicSignificance}/25</div>
+                <div className="p-2 bg-[#101010] rounded border border-[#242424] text-center">
+                  <div className="font-mono text-[#777777] text-[9px] uppercase">Macro Impact</div>
+                  <div className="font-mono font-bold text-[#F2F2F2] text-xs">{article.importanceBreakdown.economicSignificance}/25</div>
                 </div>
-                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-center">
-                  <div className="text-slate-400 text-[10px] uppercase font-bold">Source Diversity</div>
-                  <div className="font-bold text-slate-800 text-sm">{article.importanceBreakdown.sourceDiversity}/20</div>
+                <div className="p-2 bg-[#101010] rounded border border-[#242424] text-center">
+                  <div className="font-mono text-[#777777] text-[9px] uppercase">Source Diversity</div>
+                  <div className="font-mono font-bold text-[#F2F2F2] text-xs">{article.importanceBreakdown.sourceDiversity}/20</div>
                 </div>
-                <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-center">
-                  <div className="text-slate-400 text-[10px] uppercase font-bold">Market Beta</div>
-                  <div className="font-bold text-slate-800 text-sm">{article.importanceBreakdown.marketSensitivity}/20</div>
+                <div className="p-2 bg-[#101010] rounded border border-[#242424] text-center">
+                  <div className="font-mono text-[#777777] text-[9px] uppercase">Market Beta</div>
+                  <div className="font-mono font-bold text-[#F2F2F2] text-xs">{article.importanceBreakdown.marketSensitivity}/20</div>
                 </div>
               </div>
-              <p className="text-[11px] text-slate-500 mt-1.5 italic">
+              <p className="text-[10px] text-[#777777] mt-1 italic">
                 Reasoning: {article.importanceBreakdown.reasoning}
               </p>
             </div>
@@ -448,51 +448,84 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
           {/* Multi-Source Deduplication & Verification */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#A0A0A0] flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#3B82F6]" />
                 <span>Multi-Source Cluster & Verification ({article.sources?.length || 1})</span>
               </h3>
-              <span className="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
-                Deduplicated Feed
+              <span className="font-mono text-[9px] text-[#3B82F6] bg-[#3B82F6]/10 border border-[#3B82F6]/30 px-1.5 py-0.2 rounded-xs font-bold uppercase">
+                {article.isVerified ? 'Multi-Source Corroborated' : 'Single Publisher Wire'}
               </span>
             </div>
 
-            <div className="space-y-2 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <div className="space-y-2 bg-[#101010] p-3 rounded border border-[#242424]">
               {article.sources && article.sources.length > 0 ? (
                 article.sources.map((src, i) => (
-                  <div key={i} className="flex items-start justify-between gap-3 text-xs pb-2 last:pb-0 border-b last:border-0 border-slate-200">
+                  <div key={i} className="flex items-start justify-between gap-3 text-xs pb-2 last:pb-0 border-b last:border-0 border-[#242424]">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-slate-800">{src.name}</span>
-                        <span className="text-[10px] text-slate-400">{src.timeAgo}</span>
+                        <span className="font-semibold text-[#F2F2F2]">{src.name}</span>
+                        <span className="font-mono text-[10px] text-[#777777]">{src.timeAgo}</span>
+                        {src.credibilityScore && (
+                          <span className="font-mono text-[10px] text-[#777777]">
+                            Credibility: {src.credibilityScore}%
+                          </span>
+                        )}
                       </div>
-                      {src.snippet && <p className="text-slate-600 text-[11px] mt-0.5">{src.snippet}</p>}
+                      {src.snippet && <p className="text-[#A0A0A0] text-[11px] mt-0.5">{src.snippet}</p>}
                     </div>
                     <a
                       href={src.url}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="text-slate-400 hover:text-slate-700 p-1"
+                      className="text-[#777777] hover:text-[#F2F2F2] p-1"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 ))
               ) : (
-                <div className="text-xs text-slate-600">
+                <div className="text-xs text-[#777777]">
                   <span>Reported by {article.source}</span>
                 </div>
               )}
             </div>
+
+            {/* Source Provenance Chain (Data Quality & Verification) */}
+            {article.provenance && (
+              <div className="mt-2.5 p-3 rounded bg-[#0A0A0A] border border-[#242424] text-xs">
+                <div className="flex items-center justify-between font-bold text-[#F2F2F2] text-[10px] mb-1.5">
+                  <span className="font-mono flex items-center gap-1.5 uppercase tracking-wider text-[#A0A0A0]">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#3B82F6]" />
+                    Source Provenance & Audit Trail
+                  </span>
+                  <span className="font-mono text-[9px] text-[#3B82F6] uppercase">
+                    {article.provenance.verificationStatus.replace(/_/g, ' ')}
+                  </span>
+                </div>
+                <div className="text-[10px] text-[#777777] space-y-1 font-mono">
+                  <div>
+                    <span className="text-[#A0A0A0]">Retrieved: </span>
+                    <span>{new Date(article.provenance.retrievalTimestamp).toUTCString()}</span>
+                  </div>
+                  {article.provenance.evidenceChain && article.provenance.evidenceChain.length > 0 && (
+                    <ul className="list-disc list-inside space-y-0.5 text-[10px] text-[#777777] pt-1">
+                      {article.provenance.evidenceChain.map((ev, idx) => (
+                        <li key={idx}>{ev}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Full context / original content */}
           {article.fullContent && (
             <div>
-              <h3 className="font-bold text-xs uppercase tracking-wider text-slate-600 mb-2">
+              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#A0A0A0] mb-2">
                 Full Background Context
               </h3>
-              <div className="text-xs text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-200">
+              <div className="text-xs text-[#A0A0A0] leading-relaxed bg-[#101010] p-4 rounded border border-[#242424]">
                 {article.fullContent}
               </div>
             </div>
@@ -501,9 +534,9 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
           {/* Tags */}
           {article.tags && article.tags.length > 0 && (
             <div className="flex items-center gap-1.5 flex-wrap pt-2">
-              <span className="text-xs text-slate-400">Topics:</span>
+              <span className="font-mono text-[10px] text-[#777777] uppercase">Topics:</span>
               {article.tags.map((tag) => (
-                <span key={tag} className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                <span key={tag} className="font-mono text-[10px] px-1.5 py-0.2 rounded-xs bg-[#151515] text-[#A0A0A0] border border-[#242424]">
                   #{tag}
                 </span>
               ))}
@@ -511,8 +544,8 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
           )}
 
           {/* Educational Disclaimer */}
-          <div className="p-3 rounded-lg bg-slate-100 border border-slate-200 text-[11px] text-slate-500 flex items-start gap-2">
-            <Info className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+          <div className="p-2.5 rounded bg-[#050505] border border-[#242424] text-[10px] text-[#777777] flex items-start gap-2">
+            <Info className="w-3.5 h-3.5 text-[#555555] shrink-0 mt-0.5" />
             <p>
               AI interpretations are synthesized for macroeconomic context and educational intelligence. They do not constitute financial advice, guaranteed predictions, or trading signals.
             </p>
@@ -522,3 +555,4 @@ export const ArticleDrawer: React.FC<ArticleDrawerProps> = ({ article, onClose }
     </div>
   );
 };
+

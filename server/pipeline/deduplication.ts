@@ -153,7 +153,7 @@ export function deduplicateAndClusterNews(items: RawNewsItem[]): NormalizedStory
       const candidate = items[j];
       if (assigned.has(candidate.id)) continue;
 
-      // Must be within 36 hours
+      // 1. Time Horizon Check: Must be within 36 hours
       if (timeDifferenceHours(current.publishedAt, candidate.publishedAt) > 36) continue;
 
       const candidateTokens = tokenizedMap.get(candidate.id) || new Set();
@@ -163,18 +163,40 @@ export function deduplicateAndClusterNews(items: RawNewsItem[]): NormalizedStory
       const entitySim = calculateEntityOverlap(currentEntities, candidateEntities);
 
       // Blended similarity score
-      // A high entity match requires less text overlap; high text overlap links stories even with partial entity tag
       const blendedSimilarity = jaccardSim * 0.65 + entitySim * 0.35;
 
-      // Distinct event protection: if both mention different specific action keywords, keep separate
+      // Event Identity Verification:
+      // (a) Distinct action keywords protection (e.g. rate cut vs rate hike, lawsuit vs earnings beat)
       const titleA = current.title.toLowerCase();
       const titleB = candidate.title.toLowerCase();
       const hasDivergentAction =
         (titleA.includes('emergency') && !titleB.includes('emergency')) ||
         (titleA.includes('resigns') && !titleB.includes('resigns')) ||
-        (titleA.includes('record high') && titleB.includes('record low'));
+        (titleA.includes('record high') && titleB.includes('record low')) ||
+        (titleA.includes('lawsuit') && !titleB.includes('lawsuit') && !titleB.includes('sues') && !titleB.includes('antitrust')) ||
+        ((titleA.includes('cut') || titleA.includes('cuts')) && (titleB.includes('hike') || titleB.includes('hikes'))) ||
+        ((titleA.includes('gain') || titleA.includes('rally') || titleA.includes('beat')) && (titleB.includes('drop') || titleB.includes('plunge') || titleB.includes('miss')));
 
-      if (!hasDivergentAction && (blendedSimilarity >= CONFIG.DEDUPLICATION_SIMILARITY_THRESHOLD || jaccardSim >= 0.55)) {
+      // (b) Distinct date / period in economic indicator titles (e.g., January CPI vs July CPI)
+      const months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'q1', 'q2', 'q3', 'q4'];
+      const monthInA = months.find(m => titleA.includes(m));
+      const monthInB = months.find(m => titleB.includes(m));
+      const hasDivergentReleasePeriod = monthInA && monthInB && monthInA !== monthInB;
+
+      // (c) Same company but completely distinct non-overlapping event topics
+      const sameCompanyOnly =
+        currentEntities.companies.length > 0 &&
+        candidateEntities.companies.length > 0 &&
+        currentEntities.companies.some(c => candidateEntities.companies.includes(c)) &&
+        jaccardSim < 0.25;
+
+      const shouldCluster =
+        !hasDivergentAction &&
+        !hasDivergentReleasePeriod &&
+        !sameCompanyOnly &&
+        (blendedSimilarity >= CONFIG.DEDUPLICATION_SIMILARITY_THRESHOLD || jaccardSim >= 0.50);
+
+      if (shouldCluster) {
         currentClusterItems.push(candidate);
         assigned.add(candidate.id);
       }

@@ -6,7 +6,8 @@ import { createServer as createViteServer } from 'vite';
 
 import { dataStore } from './server/pipeline/dataStore';
 import { processArticleAIAnalysis, processEconomicEventAIAnalysis } from './server/pipeline/aiProcessor';
-import { runFullProviderDiagnostics } from './server/services/diagnosticsService';
+import { runFullProviderDiagnostics, runMultiTierDiagnostics } from './server/services/diagnosticsService';
+import { runCompleteReliabilityTestSuite } from './server/services/reliabilityTestSuite';
 import { CONFIG } from './server/config';
 
 dotenv.config();
@@ -23,7 +24,13 @@ async function startServer() {
   // Health and provider status
   app.get('/api/health', (req, res) => {
     const status = dataStore.getStatus();
-    res.json(status);
+    const dataHealth = dataStore.getDataHealth();
+    const intHealth = dataStore.getIntelligenceHealth();
+    res.json({
+      ...status,
+      dataHealth,
+      intelligenceHealth: intHealth
+    });
   });
 
   // Comprehensive Provider Diagnostics and Connection Health Check
@@ -33,6 +40,39 @@ async function startServer() {
       res.json(results);
     } catch (err: any) {
       res.status(500).json({ error: err.message || 'Failed to run diagnostics' });
+    }
+  });
+
+  // Multi-Tier Diagnostics (Infrastructure, Data Quality, Intelligence, Reliability Test Suite)
+  app.get('/api/diagnostics/multi-tier', async (req, res) => {
+    try {
+      const results = await runMultiTierDiagnostics();
+      res.json(results);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Failed to run multi-tier diagnostics' });
+    }
+  });
+
+  // Quarantined Items List (Data Quality Layer)
+  app.get('/api/diagnostics/quarantined', (req, res) => {
+    try {
+      const quarantined = dataStore.getQuarantinedItems();
+      res.json({
+        total: quarantined.length,
+        items: quarantined
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Failed to fetch quarantined records' });
+    }
+  });
+
+  // Automated Reliability Test Suite Execution
+  app.get('/api/diagnostics/reliability-tests', async (req, res) => {
+    try {
+      const report = await runCompleteReliabilityTestSuite();
+      res.json(report);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Failed to run reliability test suite' });
     }
   });
 
