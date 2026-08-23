@@ -4,6 +4,7 @@ import express from 'express';
 import { createServer as createViteServer } from 'vite';
 import { app } from './server/app';
 import { CONFIG } from './server/config';
+import { dataStore } from './server/pipeline/dataStore';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +29,7 @@ async function startServer() {
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Financial Intelligence Server running on port ${PORT}`);
+    dataStore.startBackgroundSync();
   });
 }
 

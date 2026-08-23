@@ -256,4 +256,14 @@ apiRouter.get('/search', (req, res) => {
 app.use('/api', apiRouter);
 app.use('/', apiRouter);
 
+// Global error handling middleware for API routes
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const errName = err?.name || 'ServerError';
+  const errMsg = err?.message || 'An unexpected server error occurred';
+  console.error(`[API Error] ${req.method} ${req.originalUrl || req.url} - ${errName}: ${errMsg}`);
+  if (!res.headersSent) {
+    res.status(500).json({ error: errMsg });
+  }
+});
+
 export default app;

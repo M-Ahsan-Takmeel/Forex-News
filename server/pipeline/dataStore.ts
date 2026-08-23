@@ -74,18 +74,38 @@ class DataStore {
     gnews: { count: 0 }
   };
 
+  private backgroundSyncTimer: any = null;
+
   constructor() {
+    // Serverless-safe: constructor does not initiate unhandled background operations at import time
+  }
+
+  /**
+   * Starts periodic background synchronization for long-running Node server environments.
+   * Safe to call from server.ts after app.listen.
+   */
+  public startBackgroundSync(): void {
+    if (this.backgroundSyncTimer) return;
     // Initial sync
     this.syncAllData().catch(err => {
-      console.error('Initial DataStore sync error:', err);
+      console.warn('Initial DataStore sync warning:', err?.message || err);
     });
-
-    // Background periodic sync
-    setInterval(() => {
+    this.backgroundSyncTimer = setInterval(() => {
       this.syncAllData().catch(err => {
-        console.warn('Periodic background sync warning:', err);
+        console.warn('Periodic background sync warning:', err?.message || err);
       });
     }, CONFIG.BACKGROUND_SYNC_INTERVAL);
+  }
+
+  /**
+   * Lazily ensures data is loaded for incoming requests that require articles/events.
+   */
+  public async ensureDataLoaded(): Promise<void> {
+    if (this.articles.length === 0) {
+      await this.syncAllData().catch(err => {
+        console.warn('Lazy data sync warning:', err?.message || err);
+      });
+    }
   }
 
   public async syncAllData(force: boolean = false): Promise<void> {
