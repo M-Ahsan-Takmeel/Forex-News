@@ -1,4 +1,7 @@
-import app from '../server/app';
+// @ts-ignore
+import appModule from '../dist/app.cjs';
+
+const app = appModule.app || appModule.default?.app || appModule.default?.default || appModule.default || appModule;
 
 export default async function handler(req: any, res: any) {
   try {
@@ -28,4 +31,5 @@ export default async function handler(req: any, res: any) {
     }
   }
 }
+
 
