@@ -6,7 +6,7 @@ const app = appModule.app || appModule.default?.app || appModule.default?.defaul
 export default async function handler(req: any, res: any) {
   try {
     // Vercel serverless rewrite compatibility:
-    // If Vercel rewrites /api/diagnostics to destination /api, restore the true requested path
+    // If Vercel rewrites /api/health or /api/diagnostics to /api, restore the true requested path
     if (req.url === '/api' || req.url === '/' || req.url === '' || req.url?.startsWith('/api?')) {
       const realPath =
         req.headers['x-matched-path'] ||
@@ -17,6 +17,8 @@ export default async function handler(req: any, res: any) {
 
       if (realPath && typeof realPath === 'string' && realPath !== '/api' && realPath !== '/') {
         req.url = realPath;
+      } else if (req.query?.path) {
+        req.url = '/api/' + (Array.isArray(req.query.path) ? req.query.path.join('/') : req.query.path);
       }
     }
 
@@ -25,8 +27,9 @@ export default async function handler(req: any, res: any) {
     console.error('Serverless function invocation exception:', error?.name || 'Error', error?.message || error);
     if (!res.headersSent) {
       res.status(500).json({
-        error: 'FUNCTION_INVOCATION_ERROR',
-        message: error?.message || 'An unexpected error occurred in the serverless handler'
+        error: true,
+        message: error?.message || 'An unexpected error occurred in the serverless handler',
+        path: req.url
       });
     }
   }

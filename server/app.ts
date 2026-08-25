@@ -32,12 +32,24 @@ function parsePreferences(req: express.Request): any {
 // Router to handle all API endpoints with or without /api prefix
 const apiRouter = express.Router();
 
-// 1. Health and Provider Status
+// Root API status endpoint
+apiRouter.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    runtime: 'vercel',
+    api: true
+  });
+});
+
+// 1. Health and Provider Status (Lightweight and instant)
 apiRouter.get('/health', async (req, res) => {
   const status = dataStore.getStatus();
   const dataHealth = dataStore.getDataHealth();
   const intHealth = dataStore.getIntelligenceHealth();
   res.json({
+    status: 'ok',
+    runtime: 'vercel',
+    api: true,
     ...status,
     dataHealth,
     intelligenceHealth: intHealth
@@ -252,9 +264,8 @@ apiRouter.get('/search', (req, res) => {
   res.json(result);
 });
 
-// Mount router on both /api (standard) and / (in case /api is stripped by proxy/rewrites)
+// Mount router on /api
 app.use('/api', apiRouter);
-app.use('/', apiRouter);
 
 // Global error handling middleware for API routes
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -262,7 +273,11 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   const errMsg = err?.message || 'An unexpected server error occurred';
   console.error(`[API Error] ${req.method} ${req.originalUrl || req.url} - ${errName}: ${errMsg}`);
   if (!res.headersSent) {
-    res.status(500).json({ error: errMsg });
+    res.status(500).json({
+      error: true,
+      message: errMsg,
+      path: req.originalUrl || req.url
+    });
   }
 });
 

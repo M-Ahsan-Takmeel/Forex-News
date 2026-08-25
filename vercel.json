@@ -1,9 +1,9 @@
 {
-  "version": 2,
-  "functions": {
-    "api/*.ts": {
-      "includeFiles": "dist/**"
+  "rewrites": [
+    {
+      "source": "/((?!api/.*).*)",
+      "destination": "/index.html"
     }
-  }
+  ]
 }
 
