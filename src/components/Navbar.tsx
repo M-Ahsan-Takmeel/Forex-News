@@ -31,19 +31,32 @@ export const Navbar: React.FC = () => {
               id="brand-logo-btn"
               onClick={() => setActiveTab('dashboard')}
               className="flex items-center gap-2.5 text-left group"
+              aria-label="FINETELI Home"
             >
-              <div className="w-7 h-7 rounded bg-[#151515] border border-[#242424] flex items-center justify-center text-[#3B82F6] group-hover:border-[#3B82F6]/50 transition-colors">
-                <span className="font-mono font-bold text-xs">M</span>
+              <div className="w-7 h-7 rounded bg-[#101010] border border-[#242424] p-1 flex items-center justify-center text-[#F2F2F2] group-hover:border-[#3B82F6]/50 group-hover:text-[#3B82F6] transition-all">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                  <rect x="2" y="2" width="20" height="5.5" fill="currentColor" rx="0.5" />
+                  <rect x="2" y="9.5" width="6.5" height="5.5" fill="currentColor" rx="0.5" />
+                  <rect x="10.5" y="9.5" width="11.5" height="1.2" fill="currentColor" rx="0.2" />
+                  <rect x="10.5" y="11.7" width="11.5" height="1.2" fill="currentColor" rx="0.2" />
+                  <rect x="10.5" y="13.9" width="11.5" height="1.2" fill="currentColor" rx="0.2" />
+                  <rect x="2" y="17" width="20" height="1.2" fill="currentColor" rx="0.2" />
+                  <rect x="2" y="19.2" width="20" height="1.2" fill="currentColor" rx="0.2" />
+                  <rect x="2" y="21.4" width="20" height="1.2" fill="currentColor" rx="0.2" />
+                </svg>
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-sm tracking-tight text-[#F2F2F2] uppercase font-mono">
-                    MACRO INTELLIGENCE
+                  <span className="font-bold text-sm tracking-wider text-[#F2F2F2] uppercase font-mono">
+                    FINETELI
                   </span>
-                  <span className="text-[9px] uppercase font-mono tracking-wider px-1.5 py-0.2 bg-[#151515] text-[#A0A0A0] border border-[#242424] rounded-xs">
+                  <span className="text-[9px] uppercase font-mono tracking-wider px-1.5 py-0.2 bg-[#151515] text-[#3B82F6] border border-[#242424] rounded-xs font-semibold">
                     LIVE
                   </span>
                 </div>
+                <span className="text-[8px] tracking-widest text-[#777777] font-mono uppercase hidden sm:block">
+                  AI-POWERED MARKET INTELLIGENCE
+                </span>
               </div>
             </button>
           </div>

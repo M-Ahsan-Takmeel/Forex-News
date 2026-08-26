@@ -1,6 +1,7 @@
 {
-  "name": "Financial News & Economic Intelligence",
-  "description": "AI-powered financial news aggregation, deduplication, market impact analysis, and economic event intelligence.",
+  "name": "FINETELI",
+  "description": "FINETELI — AI-Powered Financial News & Market Intelligence Terminal for global macroeconomic analysis, real-time news clustering, and market impact.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
+

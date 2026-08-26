@@ -39,8 +39,8 @@ const MainContent: React.FC = () => {
             <span className="font-mono text-[10px] tracking-widest uppercase font-bold text-[#F2F2F2] bg-[#151515] px-2 py-0.5 border border-[#242424] rounded-sm">
               TERMINAL
             </span>
-            <span className="font-semibold text-[#A0A0A0]">Macro Intelligence</span>
-            <span className="text-[#555555] hidden md:inline">— Financial News & Economic Intelligence Engine</span>
+            <span className="font-bold tracking-tight text-[#F2F2F2] font-mono">FINETELI</span>
+            <span className="text-[#555555] hidden md:inline">— AI-Powered Market Intelligence Engine</span>
           </div>
 
           <div className="flex items-center gap-4 flex-wrap text-[#777777] text-[11px]">

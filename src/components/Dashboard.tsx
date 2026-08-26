@@ -108,7 +108,7 @@ export const Dashboard: React.FC = () => {
             </span>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#F2F2F2] mt-0.5 font-sans">
-            Macro Intelligence Command Center
+            FINETELI Intelligence Command Center
           </h1>
         </div>
 
